@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>README</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.line-block{white-space: pre-line;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="laboratorio-5---es">Laboratorio 5 - E/S</h1>
+<h2 id="ejercicio-1-es-de-disco">Ejercicio 1: E/S de disco</h2>
+<h3 id="preliminares">Preliminares</h3>
+<p>El archivo <code>bio.c</code> implementa el <em>buffer cache</em> del sistema de archivo de <em>xv6</em>. Mantiene un <em>buffer</em> con los bloques de disco recientemente utilizados, y utiliza los servicios del <em>driver</em> de disco (<code>ide.c</code>) para almacenar o recuperar bloques del mismo.</p>
+<h3 id="que-modificar">Que modificar</h3>
+<p>Agregar una invocación a <code>cprintf()</code> en la funcion <code>bwrite()</code> (en el archivo <code>bio.c</code>), de manera que se imprima por pantalla un mensaje cada vez que un bloque es escrito en el disco:</p>
+<pre><code>cprintf(&quot;bwrite %d\n&quot;, b-&gt;blockno);
+</code></pre>
+<p>Volver a compilar y ejecutar <em>xv6</em>, y ejecutar estos comandos:</p>
+<pre><code>echo &gt; a
+echo x &gt; a
+rm a
+mkdir d
+</code></pre>
+<p>Se debería ver una secuencia de mensajes <code>log write sector ...</code> luego de ejecutar cada comando.</p>
+<h3 id="que-hacer">Que hacer</h3>
+<p>Registrar la lista de mensajes generados, indicando que tipo de bloque es el que se esta escribiendo. Por ejemplo, &quot;bloque de i-nodos&quot;, &quot;bloque de datos&quot;, etc., y por qué razón.</p>
+<h3 id="entrega">Entrega</h3>
+<p>Agregar la respuesta como un archivo de texto en el repositorio del Laboratorio.</p>
+<h2 id="ejercicio-2-pantalla">Ejercicio 2: Pantalla</h2>
+<p>El archivo <code>console.c</code> implementa la funcionalidad de E/S de la terminal. La entrada se realiza desde el teclado y/o desde el puerto serial (RS232), y la salida es tanto por la pantalla y el puerto serial. La función <code>cgaputc()</code> escribe el carácter que recibe como parámetro en la memoria de video en modo texto, suponiendo un adaptador CGA. Utiliza los siguientes datos:</p>
+<ul>
+<li><code>CRTPORT</code>, una macro con el valor <code>0x3D4</code>, que es la dirección de memoria del puerto de comandos del controlador de vídeo.</li>
+<li>La variable <code>*crt</code>, que es un puntero a la memoria de video en modo texto, mapeada en la dirección <code>0xB8000</code>. La memoria de vídeo es un arreglo de 4000 bytes que representa una grilla de 80 columnas y 25 filas, donde cada carácter se representa con 2 bytes. El primer byte indica el color de la fuente y fondo, mientras que el segundo byte es el código ASCII.</li>
+<li>La posición del cursor por hardware, que es almacenada por la controladora de vídeo en los registros <em>Cursor Location High Register</em> y <em>Cursor Location Low Register</em> (consultar archivo <code>cga.txt</code>).</li>
+</ul>
+<p>La función <code>cgaputc()</code> funciona de la siguiente manera:</p>
+<ol>
+<li>Obtiene la posición del cursor hardware, y lo almacena en la variable <code>pos</code>.</li>
+<li>Si el carácter es imprimible, lo escribe en la memoria de vídeo en la posición correspondiente. Si es un <code>\n</code> o un <code>BACKSPACE</code> actualiza la variable <code>pos</code> para reflejar el cambio de la posición del cursor.</li>
+<li>Comprueba que la nueva posición del cursor (<code>pos++</code>) este dentro de los límites de la pantalla.</li>
+<li>Realiza el <em>scroll</em> (desplazamiento) de la pantalla si corresponde.</li>
+<li>Actualiza el cursor hardware con la nueva posición.</li>
+</ol>
+<h3 id="que-hacer-1">Que hacer</h3>
+<p>Para este ejercicio se pide:</p>
+<ul>
+<li>Modificar el archivo <code>console.c</code> para cambiar el color con que el que se imprimen los caracteres por pantalla. Probar también cambiar el color de fondo. Ver la página 34 de la sección Alphanumeric Modes en la documentación VGA (que lo hereda de CGA).</li>
+<li><em>Opcional</em>: Mantener el cursor en dos variables <code>x</code> e <code>y</code>, de manera que no se requiera recuperar el cursor hardware, y sólo se deba actualizarlo.</li>
+</ul>
+<h3 id="entrega-1">Entrega</h3>
+<p>Copiar en el repositorio del Laboratorio el archivo <code>console.c</code> modificado, con los comentarios correspondientes que indiquen brevemente las modificaciones realizadas.</p>
+<hr />
+<p>¡Fin del Laboratorio 5!</p>
+</body>
+</html>

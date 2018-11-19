@@ -1,0 +1,9 @@
+Full CGA 16-color palette
+0 	black      #000000 	8 	gray          #555555
+1 	blue       #0000AA 	9 	light blue    #5555FF
+2 	green      #00AA00 	10 	light green   #55FF55
+3 	cyan       #00AAAA 	11 	light cyan    #55FFFF
+4 	red        #AA0000 	12 	light red     #FF5555
+5 	magenta    #AA00AA 	13 	light magenta #FF55FF
+6 	brown      #AA5500 	14 	yellow        #FFFF55
+7 	light gray #AAAAAA 	15 	white         #FFFFFF 
